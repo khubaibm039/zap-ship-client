@@ -3,9 +3,10 @@ import RootLayout from "../layouts/RootLayout";
 import Home from "../Pages/Home/Home/Home";
 import Coverage from "../Pages/Coverage/Coverage";
 import About from "../Pages/About/About";
-import AuthLayout from "../layouts/AuthLayout/AuthLayout";
 import Login from "../Pages/Auth/Login/Login";
 import Register from "../Pages/Auth/Register/Register";
+import AuthLayout from "../layouts/AuthLayout";
+import BeARider from "../Pages/BeARider/BeARider";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -27,7 +28,10 @@ export const router = createBrowserRouter([
                 element: <About></About>,
                 loader: () =>
                     fetch("/about.json").then((res) => res.json()),
-            },
+            },{
+                path: "/rider",
+                element: <BeARider></BeARider>
+            }
         ],
     },
     {

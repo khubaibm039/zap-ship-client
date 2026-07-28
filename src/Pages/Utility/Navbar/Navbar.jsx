@@ -1,5 +1,8 @@
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import Logo from "../../../Components/Logo/Logo";
+import useAuth from "../../../Hooks/useAuth";
+import { BsArrowUpRightCircleFill } from "react-icons/bs";
+
 
 const links = (
     <>
@@ -16,15 +19,24 @@ const links = (
             <NavLink to="">Pricing</NavLink>
         </li>
         <li>
-            <NavLink to="">Be a Rider</NavLink>
+            <NavLink to="/rider">Be a Rider</NavLink>
         </li>
     </>
 );
 
 const Navbar = () => {
+    const { user, logOut } = useAuth();
+    const handleLogOut = () => {
+        logOut()
+            .then()
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     return (
-        <div>
-            <div className="navbar bg-base-100 shadow-sm mb-8 rounded-2xl">
+        <div className="pt-8">
+            <div className="navbar bg-base-100 shadow-sm mb-8 rounded-2xl ">
                 <div className="navbar-start">
                     <div className="dropdown">
                         <div
@@ -59,8 +71,25 @@ const Navbar = () => {
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">{links}</ul>
                 </div>
-                <div className="navbar-end">
-                    <a className="btn">Button</a>
+
+                <div className="navbar-end gap-4">
+                    <div>
+                        {user ? (
+                            <a onClick={handleLogOut} className="btn rounded-xl">
+                                Sign Out
+                            </a>
+                        ) : (
+                            <Link className="btn rounded-xl" to={"/login"}>
+                                Sign In
+                            </Link>
+                        )}
+                    </div>
+                    <Link to="/BeARider" className="mr-4 flex justify-center items-center cursor-pointer" >
+                        <div className="py-4 px-4 btn bg-primary font-bold text-[20px] rounded-xl">Be a rider</div>
+                       <div className="w-full h-full ">
+                         <BsArrowUpRightCircleFill  className="w-full h-10 bg-primary rounded-full "/>
+                       </div>
+                    </Link>
                 </div>
             </div>
         </div>
