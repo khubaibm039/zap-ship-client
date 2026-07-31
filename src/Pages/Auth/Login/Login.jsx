@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import { useState } from "react";
 import SocialLogin from "../SocialLogin/SocialLogin";
+import { toast } from "react-toastify";
 
 const Login = () => {
     const {
@@ -21,8 +22,8 @@ const Login = () => {
         setFirebaseError("");
         console.log(data);
         singInUser(data.email, data.password)
-            .then((result) => {
-                console.log(result);
+            .then(() => {
+                toast.success("Login successful!");
                 navigate(location?.state || "/");
             })
             .catch((error) => {
@@ -95,8 +96,9 @@ const Login = () => {
                         </span>
                     )}
                     <Link
+                        state={"/login"}
                         className="underline text-zinc-500 font-regular text-[16px]"
-                        to={"#"}>
+                        to={"/forget-password"}>
                         Forget Password?
                     </Link>
                     {firebaseError && (

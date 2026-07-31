@@ -2,6 +2,7 @@ import { Link, NavLink } from "react-router";
 import Logo from "../../../Components/Logo/Logo";
 import useAuth from "../../../Hooks/useAuth";
 import { BsArrowUpRightCircleFill } from "react-icons/bs";
+import { toast } from "react-toastify";
 
 
 const links = (
@@ -28,7 +29,9 @@ const Navbar = () => {
     const { user, logOut } = useAuth();
     const handleLogOut = () => {
         logOut()
-            .then()
+            .then(()=>{
+                toast.success("Logout successful!");
+            })
             .catch((err) => {
                 console.log(err);
             });

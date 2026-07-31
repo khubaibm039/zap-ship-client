@@ -8,6 +8,7 @@ import Register from "../Pages/Auth/Register/Register";
 import AuthLayout from "../layouts/AuthLayout";
 import BeARider from "../Pages/BeARider/BeARider";
 import PrivateRoutes from "./PrivateRoutes";
+import ResetPassword from "../Pages/Auth/ResetPassword/ResetPassword";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -50,6 +51,13 @@ export const router = createBrowserRouter([
             {
                 path: "/register",
                 element: <Register></Register>,
+            },
+            {
+                path: "/forget-password",
+                element: (
+                        <ResetPassword></ResetPassword>
+           
+                ),
             },
         ],
     },
