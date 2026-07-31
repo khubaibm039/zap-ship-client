@@ -4,8 +4,12 @@ import useAuth from "../../../Hooks/useAuth";
 import { useState } from "react";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import axios from "axios";
+import { Link, useLocation, useNavigate } from "react-router";
 
 const Register = () => {
+    const location = useLocation();
+    console.log(location)
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
@@ -24,26 +28,27 @@ const Register = () => {
 
         registerUser(data.email, data.password, data.name)
             .then((result) => {
+                navigate(location?.state || "/");
                 console.log(result.user);
-    // --------------------------------------------------------------
-    //          1. store the image and get the photo url
-    // --------------------------------------------------------------
+                // --------------------------------------------------------------
+                //          1. store the image and get the photo url
+                // --------------------------------------------------------------
                 const formData = new FormData();
                 formData.append("image", profileImage);
-    // --------------------------------------------------------------
-    //          2. send the image to imgbb and get the url
-    // --------------------------------------------------------------
+                // --------------------------------------------------------------
+                //          2. send the image to imgbb and get the url
+                // --------------------------------------------------------------
                 const imageAPIUrl = `https://api.imgbb.com/1/upload?&key=${import.meta.env.VITE_image_hostng_api_key}`;
                 axios.post(imageAPIUrl, formData).then((res) => {
                     console.log("after image upload", res.data.data.url);
-    // --------------------------------------------------------------
-    //              3.update the user profile with the photo url 
-    // --------------------------------------------------------------
+                    // --------------------------------------------------------------
+                    //              3.update the user profile with the photo url
+                    // --------------------------------------------------------------
                     const userProfile = {
                         displayName: data.name,
                         photoURL: res.data.data.url,
                     };
-                    
+
                     updateUserProfile(userProfile)
                         .then(() => {
                             console.log("user profile updated");
@@ -159,11 +164,11 @@ const Register = () => {
                     <div className="mt-3 font-regular text-[16px]">
                         <h3 className="text-zinc-500">
                             Already have an account?{" "}
-                            <a
-                                href="/login"
+                            <Link
+                                to="/login"
                                 className="link link-hover text-[#8FA748]">
                                 Login
-                            </a>
+                            </Link>
                         </h3>
                     </div>
                 </form>

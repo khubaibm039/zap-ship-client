@@ -84,7 +84,7 @@ const Navbar = () => {
                             </Link>
                         )}
                     </div>
-                    <Link to="/BeARider" className="mr-4 flex justify-center items-center cursor-pointer" >
+                    <Link to="/rider" className="mr-4 flex justify-center items-center cursor-pointer" >
                         <div className="py-4 px-4 btn bg-primary font-bold text-[20px] rounded-xl">Be a rider</div>
                        <div className="w-full h-full ">
                          <BsArrowUpRightCircleFill  className="w-full h-10 bg-primary rounded-full "/>

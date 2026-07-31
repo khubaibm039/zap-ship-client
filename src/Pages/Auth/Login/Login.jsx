@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
-import icon from "../../../assets/image-upload-icon.png";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import useAuth from "../../../Hooks/useAuth";
 import { useState } from "react";
 import SocialLogin from "../SocialLogin/SocialLogin";
@@ -11,6 +10,9 @@ const Login = () => {
         handleSubmit,
         formState: { errors },
     } = useForm();
+    const location = useLocation();
+    const navigate = useNavigate();
+    console.log(location);
 
     const { singInUser } = useAuth();
     const [firebaseError, setFirebaseError] = useState("");
@@ -21,6 +23,7 @@ const Login = () => {
         singInUser(data.email, data.password)
             .then((result) => {
                 console.log(result);
+                navigate(location?.state || "/");
             })
             .catch((error) => {
                 switch (error.code) {
@@ -105,11 +108,12 @@ const Login = () => {
                     <div className="mt-3 font-regular text-[16px]">
                         <h3 className="text-zinc-500">
                             Don’t have any account?{" "}
-                            <a
-                                href="/register"
+                            <Link
+                                state={location.state}
+                                to="/register"
                                 className="link link-hover text-[#8FA748]">
                                 Register
-                            </a>
+                            </Link>
                         </h3>
                     </div>
                 </form>{" "}

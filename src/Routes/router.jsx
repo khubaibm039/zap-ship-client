@@ -7,6 +7,7 @@ import Login from "../Pages/Auth/Login/Login";
 import Register from "../Pages/Auth/Register/Register";
 import AuthLayout from "../layouts/AuthLayout";
 import BeARider from "../Pages/BeARider/BeARider";
+import PrivateRoutes from "./PrivateRoutes";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -26,12 +27,16 @@ export const router = createBrowserRouter([
             {
                 path: "/about",
                 element: <About></About>,
-                loader: () =>
-                    fetch("/about.json").then((res) => res.json()),
-            },{
+                loader: () => fetch("/about.json").then((res) => res.json()),
+            },
+            {
                 path: "/rider",
-                element: <BeARider></BeARider>
-            }
+                element: (
+                    <PrivateRoutes>
+                        <BeARider></BeARider>
+                    </PrivateRoutes>
+                ),
+            },
         ],
     },
     {
@@ -45,7 +50,7 @@ export const router = createBrowserRouter([
             {
                 path: "/register",
                 element: <Register></Register>,
-            }
-        ]
-    }
+            },
+        ],
+    },
 ]);
