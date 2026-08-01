@@ -16,6 +16,9 @@ const links = (
         <li>
             <NavLink to="/about">About Us</NavLink>
         </li>
+           <li>
+            <NavLink to="/send-parcel">Send Parcel</NavLink>
+        </li>
         <li>
             <NavLink to="">Pricing</NavLink>
         </li>

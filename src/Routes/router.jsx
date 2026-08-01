@@ -9,6 +9,8 @@ import AuthLayout from "../layouts/AuthLayout";
 import BeARider from "../Pages/BeARider/BeARider";
 import PrivateRoutes from "./PrivateRoutes";
 import ResetPassword from "../Pages/Auth/ResetPassword/ResetPassword";
+import NotFound from "../../NotFound";
+import SendParcel from "../Pages/SendParcel/SendParcel";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -31,12 +33,26 @@ export const router = createBrowserRouter([
                 loader: () => fetch("/about.json").then((res) => res.json()),
             },
             {
+                path: "/send-parcel",
+                element: (
+                    <PrivateRoutes>
+                        <SendParcel></SendParcel>
+                    </PrivateRoutes>
+                ),
+                loader: () => fetch("/serviceCenters.json").then((res) => res.json()),
+            },
+            {
                 path: "/rider",
                 element: (
                     <PrivateRoutes>
                         <BeARider></BeARider>
                     </PrivateRoutes>
                 ),
+            },
+
+            {
+                path: "*",
+                element: <NotFound></NotFound>,
             },
         ],
     },
@@ -54,10 +70,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/forget-password",
-                element: (
-                        <ResetPassword></ResetPassword>
-           
-                ),
+                element: <ResetPassword></ResetPassword>,
             },
         ],
     },
