@@ -1,5 +1,8 @@
 import { useForm, useWatch } from "react-hook-form";
 import { useLoaderData } from "react-router";
+import Swal from "sweetalert2";
+import UseAxiosSecure from "../../Hooks/UseAxiosSecure";
+import useAuth from "../../Hooks/useAuth";
 
 const SendParcel = () => {
     const {
@@ -12,6 +15,9 @@ const SendParcel = () => {
             parcelType: "document",
         },
     });
+    const {user} = useAuth()
+
+    const axiosSecure = UseAxiosSecure();
     const serviceCenters = useLoaderData();
     const duplicateDivisions = serviceCenters.map((c) => c.region);
     const divisions = [...new Set(duplicateDivisions)];
@@ -37,6 +43,53 @@ const SendParcel = () => {
     };
     const onSubmit = (data) => {
         console.log(data);
+        const isDocument = data.parcelType === "document";
+        const isSameDistrict = data.senderDistrict === data.receiverDistrict;
+        const pWeight = parseFloat(data.parcelWeight);
+        let cost = 0;
+        if (isDocument) {
+            cost = isSameDistrict ? 80 : 120;
+            if (pWeight > 3) {
+                const extraWeight = pWeight - 3;
+                const extraCharge = isSameDistrict
+                    ? extraWeight * 40
+                    : extraWeight * 40 + 40;
+                cost += extraCharge;
+            }
+        } else {
+            if (pWeight < 3) {
+                cost = isSameDistrict ? 110 : 150;
+            } else {
+                const minCharge = isSameDistrict ? 110 : 150;
+                const extraWeight = pWeight - 3;
+                const extraCharge = isSameDistrict
+                    ? extraWeight * 40
+                    : extraWeight * 40 + 40;
+                cost = minCharge + extraCharge;
+            }
+        }
+        console.log("Cost:", cost);
+        Swal.fire({
+            title: "Please Confirm Your Cost",
+            text: `The total cost for your parcel is ${cost} BDT. You won't be able to revert this!`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, i agree!",
+        }).then((result) => {
+            if (result.isConfirmed)
+                //  save parcel info to the database
+                axiosSecure.post("/parcels", data).then((res) => {
+                    console.log("after saving parcel ", res.data);
+                });
+
+            Swal.fire({
+                title: "Confirmed!",
+                text: "Your Order has been confirmed.",
+                icon: "success",
+            });
+        });
     };
     return (
         <div className="max-w-7xl mx-auto bg-base-100 rounded-2xl shadow-sm p-6 md:p-10 my-10 ">
@@ -118,6 +171,7 @@ const SendParcel = () => {
                                 step="0.1"
                                 placeholder="Parcel Weight (KG)"
                                 className="input input-bordered w-full disabled:bg-base-200"
+                                {...register("parcelWeight")}
                             />
                         </div>
                     </div>
@@ -157,6 +211,7 @@ const SendParcel = () => {
                                 <input
                                     type="email"
                                     placeholder="Sender email"
+                                    defaultValue={user?.email}
                                     className={`input input-bordered w-full ${
                                         errors.senderEmail ? "input-error" : ""
                                     }`}
@@ -241,7 +296,7 @@ const SendParcel = () => {
                                 </select>
                             </div>
                             {/*   Sender District */}
-                              <div className="form-control">
+                            <div className="form-control">
                                 <label className="label">
                                     <span className="label-text font-medium">
                                         Sender District
@@ -313,10 +368,9 @@ const SendParcel = () => {
                                             ? "textarea-error"
                                             : ""
                                     }`}
-                                    {...register("pickupInstruction", {
-                                        required:
-                                            "Pickup instruction is required",
-                                    })}></textarea>
+                                    {...register(
+                                        "pickupInstruction",
+                                    )}></textarea>
                             </div>
                         </div>
 
@@ -515,10 +569,9 @@ const SendParcel = () => {
                                             ? "textarea-error"
                                             : ""
                                     }`}
-                                    {...register("deliveryInstruction", {
-                                        required:
-                                            "Delivery instruction is required",
-                                    })}></textarea>
+                                    {...register(
+                                        "deliveryInstruction",
+                                    )}></textarea>
                             </div>
                         </div>
                     </div>
