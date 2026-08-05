@@ -5,7 +5,7 @@ import heroImg from "../assets/authImage.png";
 const AuthLayout = () => {
     return (
         <div>
-            <div className="flex flex-col lg:flex-row items-center justify-center h-screen relative">
+            <div className="flex flex-col lg:flex-row items-center justify-center h-screen relative ">
                 <div className="flex-1 lg:w-1/2 flex flex-col items-center h-full justify-center bg-white">
                     <Outlet></Outlet>
                 </div>

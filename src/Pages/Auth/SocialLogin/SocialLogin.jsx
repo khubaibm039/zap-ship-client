@@ -24,7 +24,7 @@ const SocialLogin = () => {
             </p>
             <button
                 onClick={handleGoogleSingIn}
-                className="w-full flex items-center justify-center gap-2.5 py-2 px-3.5 text-sm rounded-md font-semibold bg-[#EAECED]">
+                className="w-full flex items-center justify-center gap-2.5 py-2 px-3.5 text-sm rounded-md font-semibold bg-[#EAECED] cursor-pointer">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="size-4.5"
