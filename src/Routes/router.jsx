@@ -11,6 +11,8 @@ import PrivateRoutes from "./PrivateRoutes";
 import ResetPassword from "../Pages/Auth/ResetPassword/ResetPassword";
 import NotFound from "../../NotFound";
 import SendParcel from "../Pages/SendParcel/SendParcel";
+import DashboardLayout from "../layouts/DashboardLayout";
+import MyParcels from "../Pages/Dashboard/MyParcels/MyParcels";
 export const router = createBrowserRouter([
     {
         path: "/",
@@ -39,7 +41,8 @@ export const router = createBrowserRouter([
                         <SendParcel></SendParcel>
                     </PrivateRoutes>
                 ),
-                loader: () => fetch("/serviceCenters.json").then((res) => res.json()),
+                loader: () =>
+                    fetch("/serviceCenters.json").then((res) => res.json()),
             },
             {
                 path: "/rider",
@@ -71,6 +74,20 @@ export const router = createBrowserRouter([
             {
                 path: "/forget-password",
                 element: <ResetPassword></ResetPassword>,
+            },
+        ],
+    },
+    {
+        path: "dashboard",
+        element: (
+            <PrivateRoutes>
+                <DashboardLayout></DashboardLayout>
+            </PrivateRoutes>
+        ),
+        children: [
+            {
+                path: "my-parcels",
+                element: <MyParcels></MyParcels>,
             },
         ],
     },

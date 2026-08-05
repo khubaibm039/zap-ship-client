@@ -46,6 +46,7 @@ const SendParcel = () => {
         const isDocument = data.parcelType === "document";
         const isSameDistrict = data.senderDistrict === data.receiverDistrict;
         const pWeight = parseFloat(data.parcelWeight);
+        // eslint-disable-next-line no-useless-assignment
         let cost = 0;
         if (isDocument) {
             cost = isSameDistrict ? 80 : 120;
@@ -79,10 +80,13 @@ const SendParcel = () => {
             confirmButtonText: "Yes, i agree!",
         }).then((result) => {
             if (result.isConfirmed)
+// ?-------------------------------------------------------------------
                 //  save parcel info to the database
+                
                 axiosSecure.post("/parcels", data).then((res) => {
                     console.log("after saving parcel ", res.data);
                 });
+// ?-------------------------------------------------------------------
 
             Swal.fire({
                 title: "Confirmed!",
@@ -193,6 +197,7 @@ const SendParcel = () => {
                                 <input
                                     type="text"
                                     placeholder="Sender Name"
+                                    defaultValue={user?.displayName}
                                     className={`input input-bordered w-full ${
                                         errors.senderName ? "input-error" : ""
                                     }`}

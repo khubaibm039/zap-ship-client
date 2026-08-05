@@ -4,41 +4,48 @@ import useAuth from "../../../Hooks/useAuth";
 import { BsArrowUpRightCircleFill } from "react-icons/bs";
 import { toast } from "react-toastify";
 
-
-const links = (
-    <>
-        <li>
-            <NavLink to="">Services</NavLink>
-        </li>
-        <li>
-            <NavLink to="/coverage">Coverage</NavLink>
-        </li>
-        <li>
-            <NavLink to="/about">About Us</NavLink>
-        </li>
-           <li>
-            <NavLink to="/send-parcel">Send Parcel</NavLink>
-        </li>
-        <li>
-            <NavLink to="">Pricing</NavLink>
-        </li>
-        <li>
-            <NavLink to="/rider">Be a Rider</NavLink>
-        </li>
-    </>
-);
-
 const Navbar = () => {
     const { user, logOut } = useAuth();
     const handleLogOut = () => {
         logOut()
-            .then(()=>{
+            .then(() => {
                 toast.success("Logout successful!");
             })
             .catch((err) => {
                 console.log(err);
             });
     };
+    const links = (
+        <>
+            <li>
+                <NavLink to="">Services</NavLink>
+            </li>
+            <li>
+                <NavLink to="/coverage">Coverage</NavLink>
+            </li>
+            <li>
+                <NavLink to="/about">About Us</NavLink>
+            </li>
+            <li>
+                <NavLink to="/send-parcel">Send Parcel</NavLink>
+            </li>
+            <li>
+                <NavLink to="">Pricing</NavLink>
+            </li>
+            <li>
+                <NavLink to="/rider">Be a Rider</NavLink>
+            </li>
+            {user && (
+                <>
+                    <li>
+                        <NavLink to="/dashboard/my-parcels">
+                           Dashboard
+                        </NavLink>
+                    </li>
+                </>
+            )}
+        </>
+    );
 
     return (
         <div className="pt-8">
@@ -81,7 +88,9 @@ const Navbar = () => {
                 <div className="navbar-end gap-4">
                     <div>
                         {user ? (
-                            <a onClick={handleLogOut} className="btn rounded-xl">
+                            <a
+                                onClick={handleLogOut}
+                                className="btn rounded-xl">
                                 Sign Out
                             </a>
                         ) : (
@@ -90,11 +99,15 @@ const Navbar = () => {
                             </Link>
                         )}
                     </div>
-                    <Link to="/rider" className="mr-4 flex justify-center items-center cursor-pointer" >
-                        <div className="py-4 px-4 btn bg-primary font-bold text-[20px] rounded-xl">Be a rider</div>
-                       <div className="w-full h-full ">
-                         <BsArrowUpRightCircleFill  className="w-full h-10 bg-primary rounded-full "/>
-                       </div>
+                    <Link
+                        to="/rider"
+                        className="mr-4 flex justify-center items-center cursor-pointer">
+                        <div className="py-4 px-4 btn bg-primary font-bold text-[20px] rounded-xl">
+                            Be a rider
+                        </div>
+                        <div className="w-full h-full ">
+                            <BsArrowUpRightCircleFill className="w-full h-10 bg-primary rounded-full " />
+                        </div>
                     </Link>
                 </div>
             </div>
